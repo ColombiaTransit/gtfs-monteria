@@ -38,3 +38,13 @@ The repository is public. [Recaudar Sinú terms of use](https://recaudarsinu.com
 - [ ] Build GTFS generator with verified routes and explicit calendar exceptions using Python holidays for Colombia.
 - [ ] Add MobilityData validator, tests, and fixed-name release workflow after data is ready.
 - [ ] Keep Moovit as a later comparison source rather than a primary source.
+
+## Public portal technical investigation (2026-11-24)
+
+- Indexed source: https://recaudarsinu.com/rutas — 18 route names, Pradera P1 with 28 stops in one direction, a direction toggle and urban classification. A fresh text retrieval instead returned an empty route list. This is consistent with asynchronous frontend loading, but is not proof of the underlying implementation.
+- https://recaudarsinu.com/nosotros also lists Monteriana Móvil SAS as a fourth MOVISINÚ member; the SIU description names only the other three. Confirm the fourth member's operational role.
+- https://recaudarsinu.com/politica-de-datos identifies the Android package as `com.recaudarsinu.movisinu`.
+- Direct HTTP retrieval in the analysis runtime failed at DNS resolution; no raw frontend JavaScript or API response has been inspected yet.
+- `scripts/probe_recaudar.py` uses Chromium to observe ordinary public frontend traffic, record sanitized URL paths and query parameter names, JSON response structure, script filenames and route-related URL literals. It tests the initial page, a direction switch and one alternate route, if available. No login, credentials, full response bodies, or bulk database copies are retained.
+- Workflow: `.github/workflows/probe-recaudar.yml`. It can run manually or on pushes affecting the probe. Download the `recaudar-probe` artifact and inspect its JSON before designing the collector. A successful workflow does not by itself establish that the portal returned data.
+- Next: identify actual route/stop/geometry endpoints, response schemas, relationships and any access/reuse conditions. No guessed endpoints are treated as verified.
