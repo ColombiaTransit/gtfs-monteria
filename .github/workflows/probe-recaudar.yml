@@ -1,0 +1,42 @@
+name: Recaudar Sinu portal probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_recaudar.py'
+      - '.github/workflows/probe-recaudar.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recaudar-portal-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser tooling
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Syntax check
+        run: python -m py_compile scripts/probe_recaudar.py
+      - name: Observe public route portal
+        run: python scripts/probe_recaudar.py
+      - name: Upload diagnostic metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recaudar-probe
+          path: artifacts/recaudar-probe.json
+          if-no-files-found: warn
+          retention-days: 7
