@@ -70,6 +70,16 @@ async def probe(output):
                                     x for x in candidates if re.search(
                                         r"route|ruta|stop|parada|shape|schedule|horario|itiner|direction|sentido|graphql",
                                         x, re.I)})[:100]
+                                # Minified clients often concatenate a base URL,
+                                # a short endpoint fragment and a numeric ID.
+                                if "src-pages-rutas" in url:
+                                    literals = re.findall(
+                                        r"""["'\x60]((?:https?://[A-Za-z0-9.-]+)?/[A-Za-z0-9_./-]{1,150})["'\x60]""",
+                                        source)
+                                    entry["route_path_fragments"] = sorted({
+                                        x for x in literals if re.search(
+                                            r"ruta|route|sentido|direction|parada|stop|kmz|kml|horario|itiner",
+                                            x, re.I)})[:100]
                                 entry["framework_markers"] = [
                                     x for x in ("__NEXT_DATA__", "webpack", "vite", "angular", "react", "leaflet", "mapbox")
                                     if x in source.lower() or x in source]
@@ -130,21 +140,28 @@ async def probe(output):
                 await page.get_by_text("P1", exact=False).first.wait_for(timeout=20000)
             except Exception:
                 pass
-            await page.wait_for_timeout(3000)
+            # The initial route list can render before the direction and
+            # stop data. Wait for the actual route UI instead of the P1 label.
+            try:
+                await page.get_by_text(re.compile(r"CAMBIAR\s+SENTIDO|\d+\s+paradas", re.I)).first.wait_for(
+                    state="visible", timeout=25000)
+            except Exception:
+                pass
+            await page.wait_for_timeout(5000)
             await snapshot(phase)
             # A single normal direction switch and a second route selection,
             # if present. Do not enumerate or scrape every route.
-            switch = page.get_by_text("CAMBIAR SENTIDO", exact=False).first
+            switch = page.get_by_text(re.compile(r"CAMBIAR\s+SENTIDO", re.I)).first
             if await switch.count() and await switch.is_visible():
                 phase = "direction_switch"
                 await switch.click(timeout=5000)
-                await page.wait_for_timeout(3000)
+                await page.wait_for_timeout(8000)
                 await snapshot(phase)
             second = page.get_by_text(re.compile(r"D1\s*[–-]\s*DORADO", re.I)).first
             if await second.count() and await second.is_visible():
                 phase = "second_route"
                 await second.click(timeout=5000)
-                await page.wait_for_timeout(3000)
+                await page.wait_for_timeout(8000)
                 await snapshot(phase)
         except Exception as e:
             report["errors"].append({"phase": phase, "kind": type(e).__name__})
