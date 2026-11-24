@@ -28,3 +28,15 @@ https://recaudarsinu.com/page-data/rutas/page-data.json
 The initial DOM snapshot had no stop count label and no visible direction switch. Stop requests and KMZ retrieval were not observed. The initial probe may have sampled before the page finished rendering; inspect the route-specific chunk for endpoint fragments and wait for the actual direction response before taking a second snapshot.
 
 No full database copies or third-party JS are stored. Reuse conditions remain unresolved.
+
+## Second browser probe
+
+[Run 45488327174](https://github.com/ColombiaTransit/gtfs-monteria/actions/runs/45488327174), artifact 14965750912, 2026-11-24: successful. Confirmed an additional public GET endpoint:
+
+- https://data.recaudarsinu.com/api/paradas/1 — HTTP 200, 28 records, 4911 bytes.
+- First item schema: id (int), parada (str), longitud (null), latitud (null), created_at (str), updated_at (str), pivot (sentido_id int, parada_id int).
+- The direction ID parameter is inferred from the pivot relationship and still needs validation across other directions. Stop ordering semantics and coordinate coverage are not yet verified.
+- The route-specific JS chunk was retrieved (22765 bytes), but the literal scan only found /rutas. Browser network observation supplied the stop endpoint.
+- No visible direction switch or stop count in the captured DOM snapshot; only analytics request failures. Do not interpret missing DOM labels as missing API data.
+
+Next: bounded public API inventory of route/direction relationships, stop counts and coordinate completeness, and KMZ metadata, with no publication of raw stop lists or third-party geometry.
