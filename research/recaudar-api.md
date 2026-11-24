@@ -40,3 +40,17 @@ No full database copies or third-party JS are stored. Reuse conditions remain un
 - No visible direction switch or stop count in the captured DOM snapshot; only analytics request failures. Do not interpret missing DOM labels as missing API data.
 
 Next: bounded public API inventory of route/direction relationships, stop counts and coordinate completeness, and KMZ metadata, with no publication of raw stop lists or third-party geometry.
+
+## Full network metadata inventory
+
+[Run 45489221168](https://github.com/ColombiaTransit/gtfs-monteria/actions/runs/45489221168), artifact 14966175280, 2026-11-24. See [api-route-inventory.csv](api-route-inventory.csv).
+
+- 18 routes, 36 directions, 639 stop occurrences, 148 distinct stop IDs.
+- All 36 direction-to-route links and all 639 stop-to-direction pivot links match; all 639 occurrences have names.
+- Zero occurrences have usable coordinates. A stop ID is not necessarily one physical roadside boarding position, especially if reused in both directions. Do not construct stops.txt directly from these IDs without geolocation and direction checks.
+- 17 routes are typed urbana. Route 17 has no type and no KMZ reference; its directions 33 and 34 contain 23 and 25 stops respectively.
+- 17 valid KMZ files are served by https://recaudarsinu.com/rutas/ (not the data subdomain, which returned 404). Each contains two LineString and two Point elements in one KML document. In total: 34 lines and 34 points. The two points are likely route endpoints, not a complete stop inventory; validate their meanings and line orientation.
+- No explicit stop sequence field is present in the pivot schema. Verify array ordering against the portal and geometry.
+- Route ID-to-name mapping is still pending. Do not join candidate IDs by row number.
+
+Next: compare the named stops with independently sourced OSM and municipal stops, determine whether source IDs denote stop areas or boarding points, validate direction-to-line assignment, and identify route 17. If stop positions cannot be supported by evidence, consider continuous pickup/drop-off only where that boarding practice is confirmed. Reuse permission for official source data remains unresolved.
