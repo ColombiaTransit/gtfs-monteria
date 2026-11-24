@@ -1,0 +1,38 @@
+name: Recaudar Sinu API inventory
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/inventory_recaudar.py'
+      - '.github/workflows/inventory-recaudar.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recaudar-api-inventory
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m py_compile scripts/inventory_recaudar.py
+      - name: Inventory public API metadata
+        run: python scripts/inventory_recaudar.py
+      - name: Upload inventory metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recaudar-inventory
+          path: artifacts/recaudar-inventory.json
+          if-no-files-found: error
+          retention-days: 7
