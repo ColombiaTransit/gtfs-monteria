@@ -31,3 +31,19 @@ Reviewed 2026-11-25. Separate operating evidence from planning and legal framewo
 ## Archive coverage and next steps
 
 [Municipal resolution archive](https://www.monteria.gov.co/documentos/151/resoluciones-alcaldia-de-monteria/) lists annual categories. The retrieved 2025 category contains six unrelated records; 2024 category and 2026 decrees page returned 403 on direct retrieval. This is not an exhaustive search. Build targeted municipal/SECOP index inventory and identify the 2024 awarded consulting contract and 2026 interadministrative agreement. Retrieve original operational annex, route reorganization act, dated phase implementation plan, route-level frequency tables and fare decree. Track effective dates and supersession. Keep existing 18 API routes as observed baseline; no legal or scheduling changes until confirmed. Stop geocoding, app research and Moovit remain parked.
+
+## Verified from user-supplied procurement records (2026-11-25)
+
+The four-page public invitation `19. Aviso de convocatoria.pdf` dated 2024-08-09 confirms CMA-MCA-001-2024, estimated COP 566,235,087 and three months of work: two for collective transport demand validation and one for technical, legal and financial structuring (p.1–2). It is not the final study.
+
+The supplied saved SECOP II opportunity page identifies the [definitive tender notice CO1.NTC.6597720](https://community.secop.gov.co/Public/Tendering/OpportunityDetail/Index?noticeUID=CO1.NTC.6597720), previous notice CO1.NTC.6526273, process CO1.REQ.6714772, award CO1.AWD.2023838, contract **CO1.PCCNTR.6756124** (from the Ver contrato element ID), contractor INDEMO S.A.S., awarded COP 566,235,087, 2024-09-11. Status shown: Proceso adjudicado y celebrado. The saved HTML has 32 tender document rows; most download controls are JavaScript-only anchors without direct URLs or document IDs. The contract execution attachment list is not included in this saved page.
+
+Priority documents in tender list:
+- ALCANCE Y RECURSOS ETLF OPERACION MCA v.Perfil.pdf
+- 17. Estudios previos.pdf
+- 24. Pliego de condiciones definitivo.pdf
+- 11. MINUTA.pdf
+- 20. Análisis del sector.pdf
+- ADENDA No. 1.pdf
+
+Use the public tender's Ver contrato link in the award section to inspect Ejecución del contrato and its attachments. Seek actual demand study, updated transport model and operational tender annexes; technical scope documents establish requirements, not actual results. The supplied 39-page INFORMEGESTION2024.pdf (pp.13–14) confirms those products as reported by the entity; no route-level frequency or departure-window tables were found in it. Page 38 identifies operator selection as a 2025 challenge; do not assume the model was already in operation in 2024. No new frequency or schedule data verified. Do not publish original files or unrelated administrative details in the public repository.
