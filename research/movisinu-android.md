@@ -15,3 +15,6 @@ No verified APK download mirror found in targeted searches. No APK obtained or i
 Inspect AndroidManifest and assets/public or equivalent packaged web assets, then JavaScript bundle route, stop, direction, schedule and vehicle-position references. Record only relevant technical metadata, distinguishing public passenger data from account, payment and internal fleet management operations. Test ordinary public read-only endpoints only; do not use extracted credentials, circumvent access restrictions, or collect account data. Confirm actual responses and reuse permission before publishing. Existing web API uses data.recaudarsinu.com; app backend is not yet verified.
 
 Priority: schedule/frequency coverage and route/stop metadata beyond the web API. Investigate public real-time vehicle positions separately as potential GTFS-RT input. Stop geocoding remains parked per user request.
+
+## Status: parked (2026-11-25)
+The user reports that Google Play does not allow downloading the app in the Netherlands. No trusted APK is available for analysis. User requested postponing APK acquisition, static analysis and related backend research until later.
