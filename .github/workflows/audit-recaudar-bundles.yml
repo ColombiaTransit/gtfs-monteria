@@ -1,0 +1,27 @@
+name: Audit Recaudar public bundles
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/audit_recaudar_bundles.py'
+      - '.github/workflows/audit-recaudar-bundles.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright
+      - run: playwright install --with-deps chromium
+      - run: python scripts/audit_recaudar_bundles.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recaudar-bundle-audit
+          path: artifacts/recaudar-bundle-audit.json
+          retention-days: 7
