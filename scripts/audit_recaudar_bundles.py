@@ -96,6 +96,31 @@ async def main():
                                     mi["source_count"]=len(names)
                                     mi["first_party_source_count"]=len(selected)
                                     mi.update(inspect("\n".join(selected)))
+                                    # Review individual first-party source files, including
+                                    # relative URL literals such as rutas and rutas/{id}.
+                                    mi["source_inventory"] = []
+                                    for name, src in zip(names, content):
+                                        if not isinstance(src, str) or "node_modules" in name:
+                                            continue
+                                        rel = sorted({
+                                            m.group(1) for m in re.finditer(
+                                                r"""["'`]([A-Za-z0-9_./-]*(?:rutas?|sentidos?|paradas?|paraderos?|horarios?|frecuencias?|itinerarios?|trayectos?|vehiculos?|tripplanner|gtfs|optra)[A-Za-z0-9_./-]*)["'`]""",
+                                                src, re.I)
+                                            if public_path(m.group(1)) and len(m.group(1)) <= 150
+                                        })
+                                        calls = []
+                                        for line_no, line in enumerate(src.splitlines(), 1):
+                                            if not TERMS.search(line) or SENSITIVE.search(line):
+                                                continue
+                                            if re.search(r"\\b(?:fetch|axios|api|client|http)\\b|\\.(?:get|post|request)\\s*\\(", line, re.I):
+                                                # Report only line numbers and literal passenger
+                                                # path fragments, not complete source lines.
+                                                calls.append(line_no)
+                                        item = {"source":name.split("?")[0], "relative_transport_literals":rel[:100],
+                                                "transport_call_line_numbers":calls[:100]}
+                                        item.update(inspect(src))
+                                        if rel or calls or item["transport_urls"] or item["transport_paths"]:
+                                            mi["source_inventory"].append(item)
                                 except (ValueError,TypeError):
                                     mi["parse_error"]=True
                             info["sourcemap"]=mi
