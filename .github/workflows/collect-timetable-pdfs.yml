@@ -1,0 +1,62 @@
+name: Collect timetable PDFs
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/collect-timetable-pdfs.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: timetable-pdf-draft-release
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests>=2.32,<3' 'PyMuPDF>=1.25,<2'
+      - run: python scripts/download_timetable_pdfs.py
+      - name: Upload diagnostic manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: timetable-download-manifest
+          path: artifacts/timetable-download-manifest.json
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Attach archive to draft research release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="research-timetables"
+          # Find any existing release by tag, including unpublished drafts.
+          existing="$(gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[] | select(.tag_name == "research-timetables") | [.id, .draft] | @tsv')"
+          if [[ -n "$existing" ]]; then
+            if [[ "$(printf '%s\n' "$existing" | wc -l)" != "1" ]]; then
+              echo "Multiple matching releases; refusing to overwrite."
+              exit 1
+            fi
+            read -r id draft <<< "$existing"
+            if [[ "$draft" != "true" ]]; then
+              echo "Existing release is public; refusing to publish third-party documents."
+              exit 1
+            fi
+          else
+            gh release create "$tag" --draft --prerelease --latest=false \
+              --target "$GITHUB_SHA" \
+              --title "Timetable PDFs — research only" \
+              --notes "Original 2024 timetable PDFs collected for visual verification. Historical schedules; current validity and redistribution permission are unconfirmed. Keep this release unpublished. Not a GTFS release."
+          fi
+          gh release upload "$tag" artifacts/monteria-timetables.zip --clobber
+          gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[] | select(.tag_name == "research-timetables") | {html_url,draft,assets:[.assets[]|{name,size}]}'
