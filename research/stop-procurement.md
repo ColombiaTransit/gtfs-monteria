@@ -30,3 +30,9 @@
 ## Next steps
 
 The browser could see indexed metadata but opening document indexes and filtered Socrata endpoints failed. The new workflow uses the official document index and ordinary public HTML links, downloads selected technical documents temporarily, reports document formats, ZIP member names, PDF text coverage and candidate page numbers, then discards the originals. No full PDFs or text transcriptions are committed or published. Review the resulting page candidates and flag image-only files for later analysis. Coordinates and route associations must be validated against current KMZ and route directions; no new stop locations confirmed yet.
+
+## First procurement probe
+
+[Run 45555285310](https://github.com/ColombiaTransit/gtfs-monteria/actions/runs/45555285310) completed successfully but obtained no document links or files. Socrata metadata and queries worked. The SECOP II contract field is actually `n_mero_de_contrato`; the initial filter omitted it and returned zero rows for the process IDs. SECOP I returned 278 records under the overly broad process reference OR filter; its official process page returned HTTP 403. The BuscaSECOP document pages returned TLS errors. No stop coordinates or locations were extracted.
+
+The second probe corrects the contract filter, adds a separate type-aware document-ID filter, narrows SECOP I to the exact constancia and tries the public SECOP II RetrieveFile URL pattern for the three known document IDs. Those direct links remain candidates until a PDF or ZIP is actually returned. TLS verification remains enabled.
