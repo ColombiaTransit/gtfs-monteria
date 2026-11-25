@@ -38,7 +38,6 @@ The repository is public. [Recaudar Sinú terms of use](https://recaudarsinu.com
 ### Next research priorities
 - [ ] Extract service windows, departure times and frequencies from official Recaudar Sinú timetable PDFs; verify 2024 validity, day types, timing points and coverage of missing routes.
 - [ ] Search Alcaldía de Montería, Secretaría de Tránsito/Movilidad and Montería Ciudad Amable for route authorizations, operational plans, resolutions, frequency and service-hour tables, fare decrees and actual boarding rules.
-- [ ] Investigate Movisinú app public functionality and public data sources; check whether it provides stop coordinates, direction itineraries or schedule data beyond the web portal.
 - [ ] Investigate operator websites and official public announcements (Metrosinú, Montería Express, Sinumóvil, and Monteriana Móvil if operational role confirmed).
 - [ ] Review 2026 supervisor report, contract and completion record if available; seek the original digital stop inventory/artwork and 2018 plans and annexes. SECOP document downloads returned HTTP 403; avoid redundant retries.
 - [ ] Verify Vallejo (VA), Canta Claro–Villacielo (CC), Villa Caribe, and Furatena against current service evidence; establish whether these are separate active routes, variants or historical names.
@@ -47,6 +46,7 @@ The repository is public. [Recaudar Sinú terms of use](https://recaudarsinu.com
 - [ ] Build GTFS generator with verified schedules, Python holidays for Colombia, MobilityData validator, tests and fixed-name release workflow when data is ready.
 
 ### Parked by user request
+- [ ] **PARKED: Movisinú Android app and related backend research.** Google Play installation unavailable to the user in the Netherlands; APK not obtained or inspected. Resume when a trusted APK is available or user requests public web/backend research. See [movisinu-android.md](movisinu-android.md). No further app acquisition or probing for now.
 - [ ] **PARKED: stop geocoding.** Geocode the 144 Bandera captions and 16 PEP locations using Photon/OSM and verified street/landmark evidence; compare with KMZ lines and correct road side. Do not start geocoding until user resumes this work. Keep the 74 M10 and 88 Colombina photo-label extraction, route-sign associations, duplicate code CO071 and seven explicit infrastructure exceptions as related stop-inventory review tasks. No fabricated coordinates or proximity-only route assignments.
 - [ ] Moovit remains a later comparison source, not a primary research source.
 
