@@ -1,6 +1,6 @@
 # Montería public transport research
 
-Last reviewed: 2026-11-24.
+Last reviewed: 2026-11-25.
 
 ## Evidence and scope
 
@@ -27,17 +27,28 @@ Candidate operators: Metrosinú S.A.S., Montería Express S.A. and Sinumóvil S.
 
 The repository is public. [Recaudar Sinú terms of use](https://recaudarsinu.com/terminos-y-condiciones), section 6, restrict reproduction without authorization. Keep source references, factual research summaries and independently licensed data separate from third-party content. Do not mirror the PDF artwork, bulk-copy the route database or publish a feed derived from it until the applicable reuse basis is established. No third-party PDFs or full timetable transcriptions are committed. Investigate municipal open data and request permission or an openly licensed feed where needed.
 
-## Work backlog
+## Work backlog (updated 2026-11-25)
 
-- [ ] Inspect public route portal frontend and normal public network requests; identify route/stop/shape endpoints and any usage restrictions.
-- [ ] Confirm route IDs, names, directions, variants, active status and operating company.
-- [ ] Retrieve ANSV SETP GIS layer; inspect metadata, pagination and license; validate route alignment.
-- [ ] Investigate Montería Amable and municipal transport decisions for stops, frequencies, operating windows and fares.
-- [ ] Verify timetable validity and day types; obtain reuse permission or independently licensed schedules before storing full transcriptions in this public repository.
-- [ ] Collect OSM stop and geometry references with proper attribution; use GraphHopper for missing shapes or estimated running times when necessary, clearly labeling estimates.
-- [ ] Build GTFS generator with verified routes and explicit calendar exceptions using Python holidays for Colombia.
-- [ ] Add MobilityData validator, tests, and fixed-name release workflow after data is ready.
-- [ ] Keep Moovit as a later comparison source rather than a primary source.
+### Completed research
+- [x] Inspect public route portal; verify route, direction and stop API endpoints.
+- [x] Resolve 18 API route names, 36 directions, 148 distinct API stop IDs and 639 stop occurrences; no usable stop coordinates in the API.
+- [x] Inspect 17 KMZ route pairs and compare the ANSV GIS route and PEP layers. Keep KMZ as primary geometry evidence; ArcGIS lines are partial matches only.
+- [x] Identify 2018 and 2026 stop infrastructure procurements and inspect the supplied 2026 contractor final report (322 caption records). See [stop-procurement.md](stop-procurement.md).
+
+### Next research priorities
+- [ ] Extract service windows, departure times and frequencies from official Recaudar Sinú timetable PDFs; verify 2024 validity, day types, timing points and coverage of missing routes.
+- [ ] Search Alcaldía de Montería, Secretaría de Tránsito/Movilidad and Montería Ciudad Amable for route authorizations, operational plans, resolutions, frequency and service-hour tables, fare decrees and actual boarding rules.
+- [ ] Investigate Movisinú app public functionality and public data sources; check whether it provides stop coordinates, direction itineraries or schedule data beyond the web portal.
+- [ ] Investigate operator websites and official public announcements (Metrosinú, Montería Express, Sinumóvil, and Monteriana Móvil if operational role confirmed).
+- [ ] Review 2026 supervisor report, contract and completion record if available; seek the original digital stop inventory/artwork and 2018 plans and annexes. SECOP document downloads returned HTTP 403; avoid redundant retries.
+- [ ] Verify Vallejo (VA), Canta Claro–Villacielo (CC), Villa Caribe, and Furatena against current service evidence; establish whether these are separate active routes, variants or historical names.
+- [ ] Resolve API/KMZ endpoint discrepancies and Furatena missing geometry using independent evidence; GraphHopper reconstruction only after the itinerary is supported.
+- [ ] Confirm operators and agency structure; establish source reuse basis before publishing.
+- [ ] Build GTFS generator with verified schedules, Python holidays for Colombia, MobilityData validator, tests and fixed-name release workflow when data is ready.
+
+### Parked by user request
+- [ ] **PARKED: stop geocoding.** Geocode the 144 Bandera captions and 16 PEP locations using Photon/OSM and verified street/landmark evidence; compare with KMZ lines and correct road side. Do not start geocoding until user resumes this work. Keep the 74 M10 and 88 Colombina photo-label extraction, route-sign associations, duplicate code CO071 and seven explicit infrastructure exceptions as related stop-inventory review tasks. No fabricated coordinates or proximity-only route assignments.
+- [ ] Moovit remains a later comparison source, not a primary research source.
 
 ## Public portal technical investigation (2026-11-24)
 
