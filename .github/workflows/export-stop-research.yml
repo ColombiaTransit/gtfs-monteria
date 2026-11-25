@@ -1,0 +1,26 @@
+name: Export stop research reference
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/export_stop_research.py'
+      - '.github/workflows/export-stop-research.yml'
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/export_stop_research.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: api-stop-research
+          path: artifacts/api-stop-research.csv
+          retention-days: 1
+          if-no-files-found: error
