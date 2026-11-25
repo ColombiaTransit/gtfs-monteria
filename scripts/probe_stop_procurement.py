@@ -18,6 +18,7 @@ DATA = "https://www.datos.gov.co"
 PROC1 = "18-1-193585"
 PROC2 = ("CO1.REQ.9479470", "CO1.REQ.9771263", "SI-MCA-002-2026")
 CONTRACT = "CO1.PCCNTR.9318841"
+DOC_IDS = {"804228578": "INFORME DE GESTION FINAL BIG.pdf", "804228575": "ACTA DE EJECUCION FINAL BIGSIGNS.pdf", "804228571": "ACTA DE LIQUIDACION BILATERAL BIGSIGNS.pdf"}
 MAX_BYTES = 65 * 1024 * 1024
 HOSTS = {"www.datos.gov.co", "datos.gov.co", "www.contratos.gov.co", "contratos.gov.co",
          "community.secop.gov.co", "www.colombialicita.com", "colombialicita.com",
@@ -60,10 +61,15 @@ def socrata(dataset, filters):
     try:
         meta = jsonget(f"{DATA}/api/views/{dataset}.json")
         cols = {c["fieldName"]: c.get("name", "") for c in meta["columns"]}
+        types = {c["fieldName"]: c.get("dataTypeName") for c in meta["columns"]}
+        def literal(k, v):
+            if types.get(k) in ("number", "money") and str(v).isdigit():
+                return str(v)
+            return "'" + str(v).replace("'", "''") + "'"
         valid = [(k, values) for k, values in filters if k in cols]
         if not valid:
             raise ValueError("no expected filter columns")
-        where = " OR ".join(f"{k} in ({','.join(repr(v) for v in values)})" for k,values in valid)
+        where = " OR ".join(f"{k} in ({','.join(literal(k, v) for v in values)})" for k,values in valid)
         rows = jsonget(f"{DATA}/resource/{dataset}.json", {"$where": where, "$limit": 500})
         REPORT["queries"].append({"dataset": dataset, "columns": cols, "where": where, "rows": len(rows),
                                   "possibly_truncated": len(rows) == 500})
@@ -161,33 +167,36 @@ def inspect_doc(doc):
 
 
 def main():
-    # Official SECOP II document index; filter only the known contract/process IDs.
-    rows = socrata("dmgg-8hin", [("proceso", PROC2), ("numero_de_contrato",(CONTRACT,)),
-                                  ("numero_contrato",(CONTRACT,)), ("contrato",(CONTRACT,))])
+    # Query the observed field names separately to isolate schema/type errors.
+    for filters in (
+        [("n_mero_de_contrato", (CONTRACT,))],
+        [("id_documento", tuple(DOC_IDS))],
+        [("proceso", PROC2)],
+    ):
+        rows = socrata("dmgg-8hin", filters)
+        for r in rows:
+            add_document(r.get("nombre_archivo", ""), url_value(r.get("url_descarga_documento")), "SECOP II 2026 archive")
+    # Public SECOP II download URL pattern; IDs originate from the contract index.
+    # These are candidate URLs until the returned PDF is validated.
+    for doc_id, name in DOC_IDS.items():
+        add_document(name, "https://community.secop.gov.co/Public/Archive/RetrieveFile/Index?DocUniqueIdentifier=&DocumentId="+doc_id+"&InCommunity=False&InPaymentGateway=False", "SECOP II direct URL candidate")
+    # Exact SECOP I constancia only; LP-001-2018 is not globally unique.
+    rows = socrata("f789-7hwg", [("numero_de_constancia",(PROC1,))])
+    urls = set()
     for r in rows:
-        add_document(r.get("nombre_archivo", ""), url_value(r.get("url_descarga_documento")), "SECOP II 2026 archive")
-    # Official SECOP I process register; process URL can lead to document index.
-    rows = socrata("f789-7hwg", [("numero_de_constancia",(PROC1,)),("n_mero_de_constancia",(PROC1,)),
-                                  ("numero_de_proceso",("LP-001-2018",)),("n_mero_de_proceso",("LP-001-2018",))])
-    for r in rows:
-        if PROC1 not in json.dumps(r,ensure_ascii=False):
+        if str(r.get("numero_de_constancia")) != PROC1:
             continue
-        for k,v in r.items():
-            if "url" in k or "ruta" in k:
-                u = url_value(v)
-                if u:
-                    if u.startswith("http://"):
-                        u="https://"+u[7:]
-                    html_index(u)
-    html_index("https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia="+PROC1)
-    html_index("https://colombialicita.com/licitacion/109543468")
-    # Known document record IDs from the public SECOP II contract index.
-    for i in (804228578,804228575,804228571):
-        html_index(f"https://buscasecop.com/process-file/{i}")
+        u = url_value(r.get("ruta_proceso_en_secop_i"))
+        if u:
+            urls.add("https://" + u[7:] if u.startswith("http://") else u)
+    urls.add("https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia="+PROC1)
+    for u in sorted(urls):
+        html_index(u)
     # Limit downloads to the documents directly relevant to physical stops.
     for d in sorted(REPORT["documents"],key=lambda x: (not bool(re.search(r"planos|anexo|informe de gestion final",norm(x["name"]))),x["name"]))[:100]:
         if d["priority"]:
             inspect_doc(d)
+    REPORT["summary"] = {"document_links": len(REPORT["documents"]), "pdf_or_zip_downloads": sum(d.get("format") in ("pdf","zip") for d in REPORT["documents"]), "download_errors": sum("download_error" in d for d in REPORT["documents"])}
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(REPORT,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(REPORT,ensure_ascii=False))
