@@ -42,3 +42,25 @@ The second probe corrects the contract filter, adds a separate type-aware docume
 [Run 45555489946](https://github.com/ColombiaTransit/gtfs-monteria/actions/runs/45555489946) completed successfully. The corrected `n_mero_de_contrato` query returned 25 official document records; the separate document-ID query confirmed all three known priority records. Exact SECOP I constancia returned one record. See [secop-2026-documents.csv](secop-2026-documents.csv) for the complete official 2026 document index, URLs and download status.
 
 All seven attempted document downloads (four distinct documents plus three duplicate URL variants) returned HTTP 403; SECOP I also returned HTTP 403. No PDF content or additional stop locations have been retrieved. The newly identified supervisor final report (804228560) and contract (747859448) are high-priority candidates but were not downloaded by this run. Prefer normal public browser access or an official copy from the contracting entity; do not repeatedly retry identical blocked URLs. No document contents or coordinates inferred from filenames.
+
+## Final contractor report supplied by user (2026-11-25)
+
+Source: SECOP II document 804228578, INFORME DE GESTION FINAL BIG.pdf, 194 pages, SHA-256 3d066da9cba658a8c460ef219193c5d55bf72ced546fad160d8760dfed686659. Final report dated 2026-05-25, contract SI-MCA-002-2026. Page numbers below are PDF page numbers.
+
+| Section | Contract quantity (p. 19) | Caption records | Pages |
+|---|---:|---:|---|
+| Bandera | 148 | 144 | 20–91 |
+| M10 | 79 | 74 | 92–128 |
+| Colombina | 93 | 88 | 129–176 |
+| PEP | 17 | 16 | 177–193 |
+| Total | 337 | 322 | |
+
+The first 306 records have 305 distinct printed codes; CO071 appears in two sections. The M10 section includes unusual code 210D05 and CO071. PEP captions have names but no explicit stop codes. The 15-record difference is between contract quantities and caption inventory, not proof of missing operational stops. The record count includes exceptions.
+
+Explicit exceptions: BD085 (printed/stolen, p.50), BD120 (pending construction, p.59), BD146 (not found, p.70), BD148 (park under construction, p.70), BD168 (not found, p.77), BD189 (not found, p.85), M1068 (stolen, p.121). CO034 has a note about a missing front photo (p.137). Preserve all as research records; do not infer current service status.
+
+The local extraction yielded a 322-row CSV with source page and review status. GPS fields and route assignments are blank. No coordinate keywords found in the extracted caption text (pp.20–194); no EXIF GPS tag in 497 distinct embedded image objects, and no attached files. No GPS locations established by this inspection.
+
+PEP UPB photo (p.192) shows a route information panel including Vallejo and Canta Claro–Villacielo, absent from the 18-route API list. These are candidates requiring operational verification. Carrizal is not visibly listed on this specific board; do not infer discontinuation. Several panel route labels differ from the API names, including Pradera 27, Mogambo 22, and Aeropuerto/Santa Elena. Individual stop signage can provide route associations and street names, subject to image legibility and directional verification.
+
+Priorities: obtain original digital inventory or artwork if possible; geocode Bandera addresses with OSM/Photon and match to KMZ, inspect PEP route panels and QR destinations, extract M10/Colombina names and route codes from legible photo regions, resolve duplicate CO071 and exceptions. No fabricated coordinates or automated proximity-only service assignments. Full report contains unrelated financial and personal administrative information; do not commit the original or such data to the public repo.
