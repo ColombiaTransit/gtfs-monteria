@@ -47,3 +47,24 @@ Priority documents in tender list:
 - ADENDA No. 1.pdf
 
 Use the public tender's Ver contrato link in the award section to inspect Ejecución del contrato and its attachments. Seek actual demand study, updated transport model and operational tender annexes; technical scope documents establish requirements, not actual results. The supplied 39-page INFORMEGESTION2024.pdf (pp.13–14) confirms those products as reported by the entity; no route-level frequency or departure-window tables were found in it. Page 38 identifies operator selection as a 2025 challenge; do not assume the model was already in operation in 2024. No new frequency or schedule data verified. Do not publish original files or unrelated administrative details in the public repository.
+
+## Technical scope review — seven supplied PDFs (2026-11-25)
+
+The 5-page MINUTA CONSULTORIA CMA-MCA-001-2024.pdf names INDEMO and is dated 2024-09-12 (p.5); distinguish it from the blank 11. MINUTA.pdf template. It confirms the contract terms, not completion or payments.
+
+17. Estudios previos.pdf pp.6–7 (§2.3.1.1) requires field departure counts, frequency/visual occupancy counts, boarding/alighting, running times and speeds, existing infrastructure assessment and coverage, updated transport model and projected SETP service intervals/frequencies. Page 10 requires an updated operational design and georeferencing. Distinguish observed TPC data from proposed SETP data, and modeled demand on non-operating routes. The document refers to ETLF 2019 in item 7 and prints 2029 in item 10 (possible typo; not silently corrected). The 2-page ALCANCE Y RECURSOS budget (p.1) provides 3 days of fieldwork, 16 hours/day for departure/frequency/boarding/running-time counts; 18/20/44/44 personnel respectively. Quantity 22 for boarding and running-time counts may represent routes but the table does not define it. These are budgeted resources, not measurements or an operating window.
+
+Required deliverables per §2.6 (pp.12–13):
+- A / 1: Plan de Trabajo.
+- B / 2: Informe técnico de validación de la demanda (highest priority: observed data, analysis, updated transport model and recommended operational design, routes/km/IPK/IPB).
+- C / 3: Modelo e informe financiero de la concesión de Operación de Transporte.
+- D / 4: Modelo financiero sostenibilidad del SETP con escenarios FET.
+- E / 5: Estudios previos, proyecto de pliegos, minuta de contrato and annexes for the future operation tender.
+- F / 6: Informe final con última versión de todos los productos (highest priority).
+The dated contract clause 3 links payments to A (20%), B/C (30%), D/E (40%) and final adjustments/report (10%); the last payment calls it product E even though §2.6 identifies final report as F. Search both partial and final execution attachments. No evidence of actual payment in these files. The definitive pliego and addendum concern consultant selection; addendum p.1 identifies changes to bidder documentation and professional experience/numbering. The sector analysis is about procurement, not passenger demand.
+
+New legal leads from Estudios previos pp.2–4: Resolución 0586 de 2020 authorized cooperation by four operators (SOPROAS now Metrosinú, Montería Express, Monteriana Móvil, Sinumóvil); Resolución 0394 de 2024 recognized loss of enforceability of 0586. Decreto 0142 of 2024-02-22 changes article 5; compare with 0102 cited by the annual report rather than assuming they are identical. Route distribution meeting 2024-05-24 ended without agreement. Seek original acts and any subsequent changes; no current route allocation inferred.
+
+Historical ETLF study: CM-003-2019, COP 300 million (20. Análisis del sector.pdf p.24), confirmed in [official tender index](https://monteriaamable.gov.co/index.php/es/component/content/category/33-concurso-de-merito). [SECOP I 19-15-9436366](https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia=19-15-9436366). Earlier CM-004-2014 [SECOP I 14-15-2960566](https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia=14-15-2960566). Both direct SECOP pages could not be fetched in browser environment. 2019 is a fallback for historic comparison, not current schedules. [Official 2024 SECOP II document index](https://www.colombiacompra.gov.co/archivos/conjunto-datos-abier/secop-ii-archivos-descarga-historico-2024) is an alternative for locating actual contract attachments.
+
+All seven PDFs inspected via text extraction and relevant provided page images. No actual per-route measurement table, stop coordinates or departure schedule identified. Only factual summaries recorded; original PDFs not committed. Next obtain products B/F, data annexes and execution report for CO1.PCCNTR.6756124; prioritize 2024 measured TPC over historical 2019 model, confirm present-day validity independently.
