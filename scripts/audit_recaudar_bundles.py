@@ -112,7 +112,7 @@ async def main():
                                         for line_no, line in enumerate(src.splitlines(), 1):
                                             if not TERMS.search(line) or SENSITIVE.search(line):
                                                 continue
-                                            if re.search(r"\\b(?:fetch|axios|api|client|http)\\b|\\.(?:get|post|request)\\s*\\(", line, re.I):
+                                            if re.search(r"\b(?:fetch|axios|api|client|http)\b|\.(?:get|post|request)\s*\(", line, re.I):
                                                 # Report only line numbers and literal passenger
                                                 # path fragments, not complete source lines.
                                                 calls.append(line_no)
@@ -126,6 +126,7 @@ async def main():
                             info["sourcemap"]=mi
             except Exception as e:
                 info["error"]=type(e).__name__
+                report["errors"].append({"url":u,"error":type(e).__name__})
             report["assets"].append(info)
         report["discovered_script_count"]=len(assets)
         report["script_limit_reached"]=len(assets)>MAX_ASSETS
@@ -134,5 +135,7 @@ async def main():
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(report,ensure_ascii=False))
+    if report["errors"] or any(a.get("error") or a.get("sourcemap", {}).get("parse_error") for a in report["assets"]):
+        raise SystemExit("Incomplete audit: review asset errors")
 if __name__=="__main__":
     asyncio.run(main())
