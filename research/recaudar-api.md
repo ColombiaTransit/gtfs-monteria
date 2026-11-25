@@ -54,3 +54,11 @@ Next: bounded public API inventory of route/direction relationships, stop counts
 - Route ID-to-name mapping is still pending. Do not join candidate IDs by row number.
 
 Next: compare the named stops with independently sourced OSM and municipal stops, determine whether source IDs denote stop areas or boarding points, validate direction-to-line assignment, and identify route 17. If stop positions cannot be supported by evidence, consider continuous pickup/drop-off only where that boarding practice is confirmed. Reuse permission for official source data remains unresolved.
+
+## Spatial probe (2026-11-25)
+
+[Run 45553609709](https://github.com/ColombiaTransit/gtfs-monteria/actions/runs/45553609709), job 139000306078: the ANSV service is accessible from GitHub Actions. Layer 0 Propuesta_PEP has 11 proposed points; layer 1 Municipio_PEP has 13 municipal points (fields id, tipo, zona); layer 5 Municipio_Rutas_SETP has 30 polyline features (id, tipo, num, shape_leng). Service has 13 layers in total. No explicit license or description is provided in inspected metadata. Municipal points are candidates, not verified active boarding positions.
+
+All 18 API route names are now resolved in [kmz-endpoints.csv](kmz-endpoints.csv). Missing KMZ route 17 is FURATENA. All 17 KMZ pairs have two named points at the line endpoints within rounded 1 m. These are geographic termini, not verified boarding positions. Tambo's two lines are both digitized MOCARI to TAMBO; the 14.193 km line needs reversal if assigned to the return trip. Sabanal and Rancho Grande labels disagree with coordinate orientation. Panzenú has an anomalous second line name. Match directions using evidence rather than line order or naming alone.
+
+Added spatial comparison to check bidirectional line overlap at 50 m, rank ArcGIS candidates, find PEP points near KMZ lines and endpoints, and compare first/last API stop names with KMZ endpoints. An unmatched ArcGIS line is not proof of Furatena; route identification needs independent evidence. No full third-party geometries are committed.
